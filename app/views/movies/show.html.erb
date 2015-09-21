@@ -1,0 +1,64 @@
+<article id="movie" class="movie">
+  <header>
+    <h1><%= @movie.title %></h1>
+  </header>
+  <p>
+    <%= image_for(@movie) %>
+  </p>
+  <h3>Description</h3>
+  <p>
+    <%= @movie.description %>
+  </p>
+  <h3 class="no-rule">
+    <%= @movie.rating %> &bull; <%= @movie.duration %> 
+  </h3>
+  <h3>Released On</h3>
+  <p>
+    <%= @movie.released_on %>
+  </p>
+  <h3>Total Gross</h3>
+  <p>
+    <%= format_total_gross(@movie) %>
+  </p>
+  <h3>Cast</h3>
+  <p>
+    <%= @movie.cast %>
+  </p>
+  <h3>Director</h3>
+  <p>
+    <%= @movie.director %>
+  </p>
+  <h3>Duration</h3>
+  <p>
+    <%= @movie.duration %>
+  </p>
+  <h3>Average Review</h3>
+  <p>
+    <%= format_average_stars(@movie) %>
+  </p>
+</article>
+
+<nav>
+  <p>
+    <%= link_to 'Write Review', new_movie_review_path(@movie),
+            class: 'button ok review' %>
+  </p>  
+  <p>
+    <% if @movie.recent_reviews.any? %>
+      <h3>Recent Reviews</h3>
+      <ol id="reviews">
+        <% @movie.recent_reviews.each do |review| %>
+          <li><%= truncate(review.comment, length: 40, seperator: ' ') %> (<%= review.name %>)</li>
+        <% end %>
+      </ol>
+      <p>
+        Read all <%= link_to pluralize(@movie.reviews.size, "Review"), 
+                      movie_reviews_path(@movie) %>
+      </p>
+    <% end %>    
+    
+    <%= link_to "Edit", edit_movie_path(@movie) %> |
+    <%= link_to "Delete", movie_path(@movie), method: :delete, 
+       data: {confirm: 'Are you sure?'} %>
+  </p>
+</nav>
